@@ -142,14 +142,15 @@ local plugins = {
     }
   },
   {
- "akinsho/flutter-tools.nvim",
+    "akinsho/flutter-tools.nvim",
     dependencies = { "nvim-lua/plenary.nvim" }, -- Requiere plenary.nvim
     config = function()
-      require("configs.flutter") -- Cargar configuración desde configs/flutter.lua
+      require("configs.flutter")                -- Cargar configuración desde configs/flutter.lua
     end,
   },
   {
-    "github/copilot.vim"
+    "github/copilot.vim",
+    lazy = false
   }
 }
 return plugins
