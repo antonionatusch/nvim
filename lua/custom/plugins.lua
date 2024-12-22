@@ -148,5 +148,8 @@ local plugins = {
       require("configs.flutter") -- Cargar configuración desde configs/flutter.lua
     end,
   },
+  {
+    "github/copilot.vim"
+  }
 }
 return plugins
