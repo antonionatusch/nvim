@@ -150,7 +150,10 @@ local plugins = {
   },
   {
     "github/copilot.vim",
-    lazy = false
+    lazy = false,
+    config = function()
+      require("custom.configs.copilot")   -- Carga la configuración desde configs/copilot.lua
+    end,
   }
 }
 return plugins
