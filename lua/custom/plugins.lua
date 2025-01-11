@@ -143,9 +143,10 @@ local plugins = {
   },
   {
     "akinsho/flutter-tools.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" }, -- Requiere plenary.nvim
+    dependencies = { "nvim-lua/plenary.nvim", "stevearc/dressing.nvim" }, -- Requiere plenary.nvim
+    lazy = false,
     config = function()
-      require("configs.flutter")                -- Cargar configuración desde configs/flutter.lua
+      require("custom.configs.flutter")                -- Cargar configuración desde configs/flutter.lua
     end,
   },
   {

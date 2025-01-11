@@ -1,7 +1,15 @@
-local on_attach = require("plugins.configs.lspconfig").on_attach
-local capabilities = require("plugins.configs.lspconfig").capabilities
+local lspconfig = require("lspconfig")
 
-require("flutter-tools").setup {
+local on_attach = function(client, bufnr)
+  -- Configuración específica de on_attach
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_buf_set_keymap(bufnr, "n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+require("flutter-tools").setup({
   ui = {
     border = "rounded",
   },
@@ -22,4 +30,4 @@ require("flutter-tools").setup {
   dev_tools = {
     autostart = true,
   },
-}
+})
