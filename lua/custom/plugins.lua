@@ -146,15 +146,15 @@ local plugins = {
     dependencies = { "nvim-lua/plenary.nvim", "stevearc/dressing.nvim" }, -- Requiere plenary.nvim
     lazy = false,
     config = function()
-      require("custom.configs.flutter")                -- Cargar configuración desde configs/flutter.lua
+      require("custom.configs.flutter") -- Cargar configuración desde configs/flutter.lua
     end,
   },
   {
     "github/copilot.vim",
     lazy = false,
     config = function()
-      require("custom.configs.copilot")   -- Carga la configuración desde configs/copilot.lua
+      require("custom.configs.copilot") -- Carga la configuración desde configs/copilot.lua
     end,
-  }
+  },
 }
 return plugins
