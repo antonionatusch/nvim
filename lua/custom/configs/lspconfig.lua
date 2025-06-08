@@ -4,7 +4,7 @@ local capabilities = config.capabilities
 local util = require "lspconfig/util"
 local lspconfig = require("lspconfig")
 
-local global_path = "/home/tusch/.nvm/versions/node/v22.14.0/lib/node_modules"
+local global_path = vim.fn.trim(vim.fn.system("npm root -g"))
 
 local cmd = {
   "ngserver",
@@ -77,13 +77,13 @@ lspconfig.html.setup {
   settings = {
     html = {
       format = {
-        enable = true,         -- Habilitar formato automático
+        enable = true, -- Habilitar formato automático
       },
       hover = {
         documentation = true,
         references = true,
       },
-      validate = true,       -- Validar HTML
+      validate = true, -- Validar HTML
     },
   },
 }
