@@ -4,6 +4,26 @@ local capabilities = config.capabilities
 local util = require "lspconfig/util"
 local lspconfig = require("lspconfig")
 
+local global_path = "/home/tusch/.nvm/versions/node/v22.14.0/lib/node_modules"
+
+local cmd = {
+  "ngserver",
+  "--stdio",
+  "--tsProbeLocations",
+  global_path,
+  "--ngProbeLocations",
+  global_path,
+}
+
+-- Configuración personalizada
+lspconfig.angularls.setup {
+  cmd = cmd,
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = util.root_pattern("angular.json", "nx.json"),
+  filetypes = { "typescript", "html", "typescriptreact" },
+}
+
 local function organize_imports()
   local params = {
     command = "_typescript.organizeImports",
@@ -51,21 +71,21 @@ lspconfig.cssls.setup {
     },
   },
 }
-lspconfig.html.setup{
-    on_attach = on_attach,
-    capabilities = capabilities,
-    settings = {
-        html = {
-            format = {
-                enable = true, -- Habilitar formato automático
-            },
-            hover = {
-                documentation = true,
-                references = true,
-            },
-            validate = true, -- Validar HTML
-        },
+lspconfig.html.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    html = {
+      format = {
+        enable = true,         -- Habilitar formato automático
+      },
+      hover = {
+        documentation = true,
+        references = true,
+      },
+      validate = true,       -- Validar HTML
     },
+  },
 }
 
 lspconfig.dartls.setup {

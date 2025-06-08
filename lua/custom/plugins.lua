@@ -59,6 +59,9 @@ local plugins = {
         "lua-language-server",
         "codelldb",
         "ts_ls"
+      },
+      handlers = {
+        ["angularls"] = function() end,
       }
     }
   },
