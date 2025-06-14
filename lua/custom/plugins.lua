@@ -58,7 +58,11 @@ local plugins = {
         "clangd",
         "lua-language-server",
         "codelldb",
-        "ts_ls"
+        "css-lsp",
+        "html-lsp",
+        "codelldb",
+        "dcm",
+        "tailwindcss-language-server",
       },
       handlers = {
         ["angularls"] = function() end,
