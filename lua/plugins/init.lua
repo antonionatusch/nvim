@@ -32,6 +32,11 @@ local default_plugins = {
   {
     "NvChad/nvim-colorizer.lua",
     event = "User FilePost",
+    opts = {
+      user_default_options = {
+        tailwind = true, -- enable tailwindcss colors
+      }
+    },
     config = function(_, opts)
       require("colorizer").setup(opts)
 

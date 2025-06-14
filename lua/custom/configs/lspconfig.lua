@@ -98,3 +98,35 @@ lspconfig.dartls.setup {
     },
   },
 }
+
+lspconfig.tailwindcss.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  root_dir = util.root_pattern("tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git"),
+  filetypes = {
+    "html",
+    "typescriptreact",
+    "javascriptreact",
+    "css",
+    "scss",
+    "sass",
+  },
+  settings = {
+    tailwindCSS = {
+      lint = {
+        cssConflict = "warning",
+        invalidApply = "error",
+        invalidScreen = "error",
+        invalidVariant = "error",
+        recommendedVariantOrder = "warning",
+      },
+      experimental = {
+        classRegex = {
+          -- compatibilidad con Angular
+          "class\\s*=\\s*\"([^\"]*)\"",
+          "ngClass\\s*=\\s*\"([^\"]*)\"",
+        },
+      },
+    },
+  },
+}
