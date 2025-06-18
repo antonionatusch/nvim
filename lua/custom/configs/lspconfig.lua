@@ -32,21 +32,25 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
--- lspconfig.ts_ls.setup {
---   on_attach = on_attach,
---   capabilities = capabilities,
---   init_options = {
---     preferences = {
---       disableSuggestions = true,
---     }
---   },
---   commands = {
---     OrganizeImports = {
---       organize_imports,
---       description = "Organize Imports",
---     }
---   }
--- }
+lspconfig.ts_ls.setup {
+  on_attach = function(client, bufnr)
+    -- No se desactiva el formateo aquí
+    on_attach(client, bufnr)
+
+    -- Atajo para organizar imports
+    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>oi", "", {
+      callback = organize_imports,
+      noremap = true,
+      silent = true,
+      desc = "Organize Imports (TypeScript)"
+    })
+  end,
+  capabilities = capabilities,
+  root_dir = util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
+  filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+}
+
+
 
 
 lspconfig.clangd.setup {
