@@ -10,6 +10,7 @@ local M = {
   filetype = {
     javascript = { prettier },
     typescript = { prettier },
+    html = { prettier },
     ["*"] = {
       require("formatter.filetypes.any").remove_trailing_whitespace
     }
