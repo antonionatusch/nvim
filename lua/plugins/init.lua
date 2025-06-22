@@ -264,3 +264,5 @@ if #config.plugins > 0 then
 end
 
 require("lazy").setup(default_plugins, config.lazy_nvim)
+require("luasnip").filetype_extend("typescript", { "angular" })
+require("luasnip").filetype_extend("html", { "angular" })
