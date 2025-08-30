@@ -54,6 +54,9 @@ lspconfig.ts_ls.setup {
 
 
 lspconfig.clangd.setup {
+  cmd = { "clangd",
+    "--compile-commands-dir=build",
+    "--query-driver=/usr/bin/g++,/usr/bin/clang++" },
   on_attach = function(client, bufnr)
     client.server_capabilities.signatureHelpProvider = false
     on_attach(client, bufnr)
