@@ -65,25 +65,29 @@ vim.lsp.config["lua_ls"] = {
   },
 }
 
--- Setup LspAttach autocmd for on_attach behavior
+-- Setup LspAttach autocmd for on_attach behavior (only for lua_ls and base behavior)
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     local bufnr = args.buf
     
+    if not client then
+      return
+    end
+    
     -- Call on_init if needed
-    if M.on_init and client then
+    if M.on_init then
       M.on_init(client, bufnr)
     end
     
     -- Call on_attach
-    if M.on_attach and client then
+    if M.on_attach then
       M.on_attach(client, bufnr)
     end
   end,
 })
 
 -- Enable lua_ls
-vim.lsp.enable("lua_ls")
+vim.lsp.enable({ "lua_ls" })
 
 return M

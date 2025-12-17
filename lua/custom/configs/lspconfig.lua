@@ -112,6 +112,7 @@ vim.lsp.config["tailwindcss"] = {
 }
 
 -- Setup custom LspAttach handlers for specific servers
+-- This extends the base LspAttach autocmd from plugins.configs.lspconfig
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -146,5 +147,5 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
--- Enable all LSP servers
+-- Enable all custom LSP servers
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss" })
