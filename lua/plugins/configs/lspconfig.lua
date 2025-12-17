@@ -40,11 +40,12 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-require("lspconfig").lua_ls.setup {
-  on_init = M.on_init,
-  on_attach = M.on_attach,
+-- Define lua_ls config using new Neovim 0.11+ API
+vim.lsp.config["lua_ls"] = {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", "stylua.toml", "selene.toml", ".git" },
   capabilities = M.capabilities,
-
   settings = {
     Lua = {
       diagnostics = {
@@ -63,5 +64,26 @@ require("lspconfig").lua_ls.setup {
     },
   },
 }
+
+-- Setup LspAttach autocmd for on_attach behavior
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local bufnr = args.buf
+    
+    -- Call on_init if needed
+    if M.on_init and client then
+      M.on_init(client, bufnr)
+    end
+    
+    -- Call on_attach
+    if M.on_attach and client then
+      M.on_attach(client, bufnr)
+    end
+  end,
+})
+
+-- Enable lua_ls
+vim.lsp.enable("lua_ls")
 
 return M
