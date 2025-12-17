@@ -14,7 +14,7 @@ local cmd = {
 }
 
 -- Configuración personalizada
-vim.lsp.config("angularls", {
+vim.lsp.enable("angularls", {
   cmd = cmd,
   on_attach = on_attach,
   capabilities = capabilities,
@@ -30,7 +30,7 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
-vim.lsp.config("ts_ls", {
+vim.lsp.enable("ts_ls", {
   on_attach = function(client, bufnr)
     -- No se desactiva el formateo aquí
     on_attach(client, bufnr)
@@ -51,7 +51,7 @@ vim.lsp.config("ts_ls", {
 
 
 
-vim.lsp.config("clangd", {
+vim.lsp.enable("clangd", {
   cmd = { "clangd",
     "--compile-commands-dir=build",
     "--query-driver=/usr/bin/g++,/usr/bin/clang++" },
@@ -61,7 +61,7 @@ vim.lsp.config("clangd", {
   end,
   capabilities = capabilities,
 })
-vim.lsp.config("cssls", {
+vim.lsp.enable("cssls", {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -76,7 +76,7 @@ vim.lsp.config("cssls", {
     },
   },
 })
-vim.lsp.config("html", {
+vim.lsp.enable("html", {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -93,7 +93,7 @@ vim.lsp.config("html", {
   },
 })
 
-vim.lsp.config("dartls", {
+vim.lsp.enable("dartls", {
   on_attach = on_attach,
   capabilities = capabilities,
   root_markers = { "pubspec.yaml" },
@@ -104,7 +104,7 @@ vim.lsp.config("dartls", {
   },
 })
 
-vim.lsp.config("tailwindcss", {
+vim.lsp.enable("tailwindcss", {
   on_attach = on_attach,
   capabilities = capabilities,
   root_markers = { "tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git" },

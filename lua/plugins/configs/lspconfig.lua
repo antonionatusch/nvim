@@ -40,11 +40,13 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-vim.lsp.config("lua_ls", {
+-- Setup lua_ls using Neovim 0.11+ built-in LSP configuration
+-- The config is automatically loaded from nvim-lspconfig's lsp/ directory
+vim.lsp.enable("lua_ls", {
   on_init = M.on_init,
   on_attach = M.on_attach,
   capabilities = M.capabilities,
-
+  root_markers = { ".luarc.json", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", ".git" },
   settings = {
     Lua = {
       diagnostics = {
