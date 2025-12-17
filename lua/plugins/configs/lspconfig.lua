@@ -15,7 +15,7 @@ end
 
 -- disable semantic tokens
 M.on_init = function(client, _)
-  if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method "textDocument/semanticTokens" then
+  if not utils.load_config().ui.lsp_semantic_tokens and client:supports_method "textDocument/semanticTokens" then
     client.server_capabilities.semanticTokensProvider = nil
   end
 end
@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
     
     -- Handle semantic tokens (equivalent to on_init)
-    if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method "textDocument/semanticTokens" then
+    if not utils.load_config().ui.lsp_semantic_tokens and client:supports_method "textDocument/semanticTokens" then
       client.server_capabilities.semanticTokensProvider = nil
     end
     
