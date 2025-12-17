@@ -1,5 +1,3 @@
-local lspconfig = require("lspconfig")
-
 local on_attach = function(client, bufnr)
   -- Configuración específica de on_attach
   local opts = { noremap = true, silent = true }

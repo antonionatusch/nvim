@@ -1,8 +1,5 @@
 local config = require("plugins.configs.lspconfig")
-local on_attach = config.on_attach
 local capabilities = config.capabilities
-local util = require "lspconfig/util"
-local lspconfig = require("lspconfig")
 
 local global_path = vim.fn.trim(vim.fn.system("npm root -g"))
 
@@ -15,56 +12,31 @@ local cmd = {
   global_path,
 }
 
--- Configuración personalizada
-lspconfig.angularls.setup {
+-- Define angularls config
+vim.lsp.config["angularls"] = {
   cmd = cmd,
-  on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = util.root_pattern("angular.json", "nx.json"),
+  root_markers = { "angular.json", "nx.json" },
   filetypes = { "typescript", "html", "typescriptreact" },
 }
 
-local function organize_imports()
-  local params = {
-    command = "_typescript.organizeImports",
-    arguments = { vim.api.nvim_buf_get_name(0) },
-  }
-  vim.lsp.buf.execute_command(params)
-end
-
-lspconfig.ts_ls.setup {
-  on_attach = function(client, bufnr)
-    -- No se desactiva el formateo aquí
-    on_attach(client, bufnr)
-
-    -- Atajo para organizar imports
-    vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>oi", "", {
-      callback = organize_imports,
-      noremap = true,
-      silent = true,
-      desc = "Organize Imports (TypeScript)"
-    })
-  end,
+-- Define ts_ls config
+vim.lsp.config["ts_ls"] = {
   capabilities = capabilities,
-  root_dir = util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
+  root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 }
 
-
-
-
-lspconfig.clangd.setup {
+-- Define clangd config
+vim.lsp.config["clangd"] = {
   cmd = { "clangd",
     "--compile-commands-dir=build",
     "--query-driver=/usr/bin/g++,/usr/bin/clang++" },
-  on_attach = function(client, bufnr)
-    client.server_capabilities.signatureHelpProvider = false
-    on_attach(client, bufnr)
-  end,
   capabilities = capabilities,
 }
-lspconfig.cssls.setup {
-  on_attach = on_attach,
+
+-- Define cssls config
+vim.lsp.config["cssls"] = {
   capabilities = capabilities,
   settings = {
     css = {
@@ -78,8 +50,9 @@ lspconfig.cssls.setup {
     },
   },
 }
-lspconfig.html.setup {
-  on_attach = on_attach,
+
+-- Define html config
+vim.lsp.config["html"] = {
   capabilities = capabilities,
   settings = {
     html = {
@@ -95,10 +68,10 @@ lspconfig.html.setup {
   },
 }
 
-lspconfig.dartls.setup {
-  on_attach = on_attach,
+-- Define dartls config
+vim.lsp.config["dartls"] = {
   capabilities = capabilities,
-  root_dir = util.root_pattern("pubspec.yaml"),
+  root_markers = { "pubspec.yaml" },
   settings = {
     dart = {
       enableSdkFormatter = true, -- Habilitar formateador del SDK de Dart
@@ -106,10 +79,10 @@ lspconfig.dartls.setup {
   },
 }
 
-lspconfig.tailwindcss.setup {
-  on_attach = on_attach,
+-- Define tailwindcss config
+vim.lsp.config["tailwindcss"] = {
   capabilities = capabilities,
-  root_dir = util.root_pattern("tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git"),
+  root_markers = { "tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git" },
   filetypes = {
     "html",
     "typescriptreact",
@@ -137,3 +110,42 @@ lspconfig.tailwindcss.setup {
     },
   },
 }
+
+-- Helper function for TypeScript organize imports
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
+-- Setup custom LspAttach handlers for specific servers
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local bufnr = args.buf
+    
+    if not client then
+      return
+    end
+    
+    -- Handle ts_ls specific: organize imports keybinding
+    if client.name == "ts_ls" then
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>oi", "", {
+        callback = organize_imports,
+        noremap = true,
+        silent = true,
+        desc = "Organize Imports (TypeScript)"
+      })
+    end
+    
+    -- Handle clangd specific: disable signature help
+    if client.name == "clangd" then
+      client.server_capabilities.signatureHelpProvider = false
+    end
+  end,
+})
+
+-- Enable all custom LSP servers
+vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss" })
