@@ -1,8 +1,6 @@
 local config = require("plugins.configs.lspconfig")
 local on_attach = config.on_attach
 local capabilities = config.capabilities
-local util = require "lspconfig/util"
-local lspconfig = require("lspconfig")
 
 local global_path = vim.fn.trim(vim.fn.system("npm root -g"))
 
@@ -16,13 +14,13 @@ local cmd = {
 }
 
 -- Configuración personalizada
-lspconfig.angularls.setup {
+vim.lsp.config("angularls", {
   cmd = cmd,
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = util.root_pattern("angular.json", "nx.json"),
+  root_markers = { "angular.json", "nx.json" },
   filetypes = { "typescript", "html", "typescriptreact" },
-}
+})
 
 local function organize_imports()
   local params = {
@@ -32,7 +30,7 @@ local function organize_imports()
   vim.lsp.buf.execute_command(params)
 end
 
-lspconfig.ts_ls.setup {
+vim.lsp.config("ts_ls", {
   on_attach = function(client, bufnr)
     -- No se desactiva el formateo aquí
     on_attach(client, bufnr)
@@ -46,14 +44,14 @@ lspconfig.ts_ls.setup {
     })
   end,
   capabilities = capabilities,
-  root_dir = util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git"),
+  root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-}
+})
 
 
 
 
-lspconfig.clangd.setup {
+vim.lsp.config("clangd", {
   cmd = { "clangd",
     "--compile-commands-dir=build",
     "--query-driver=/usr/bin/g++,/usr/bin/clang++" },
@@ -62,8 +60,8 @@ lspconfig.clangd.setup {
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
-}
-lspconfig.cssls.setup {
+})
+vim.lsp.config("cssls", {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -77,8 +75,8 @@ lspconfig.cssls.setup {
       validate = true,
     },
   },
-}
-lspconfig.html.setup {
+})
+vim.lsp.config("html", {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
@@ -93,23 +91,23 @@ lspconfig.html.setup {
       validate = true, -- Validar HTML
     },
   },
-}
+})
 
-lspconfig.dartls.setup {
+vim.lsp.config("dartls", {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = util.root_pattern("pubspec.yaml"),
+  root_markers = { "pubspec.yaml" },
   settings = {
     dart = {
       enableSdkFormatter = true, -- Habilitar formateador del SDK de Dart
     },
   },
-}
+})
 
-lspconfig.tailwindcss.setup {
+vim.lsp.config("tailwindcss", {
   on_attach = on_attach,
   capabilities = capabilities,
-  root_dir = util.root_pattern("tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git"),
+  root_markers = { "tailwind.config.js", "tailwind.config.cjs", "tailwind.config.ts", "postcss.config.js", "angular.json", ".git" },
   filetypes = {
     "html",
     "typescriptreact",
@@ -136,4 +134,4 @@ lspconfig.tailwindcss.setup {
       },
     },
   },
-}
+})
