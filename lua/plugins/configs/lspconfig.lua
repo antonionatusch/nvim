@@ -65,7 +65,7 @@ vim.lsp.config["lua_ls"] = {
   },
 }
 
--- Setup LspAttach autocmd for on_attach behavior (only for lua_ls and base behavior)
+-- Setup LspAttach autocmd for on_attach behavior
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -75,12 +75,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
       return
     end
     
-    -- Call on_init if needed
-    if M.on_init then
-      M.on_init(client, bufnr)
+    -- Handle semantic tokens (equivalent to on_init)
+    if not utils.load_config().ui.lsp_semantic_tokens and client.supports_method "textDocument/semanticTokens" then
+      client.server_capabilities.semanticTokensProvider = nil
     end
     
-    -- Call on_attach
+    -- Call on_attach for all servers
     if M.on_attach then
       M.on_attach(client, bufnr)
     end

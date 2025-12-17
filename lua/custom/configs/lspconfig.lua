@@ -111,8 +111,16 @@ vim.lsp.config["tailwindcss"] = {
   },
 }
 
+-- Helper function for TypeScript organize imports
+local function organize_imports()
+  local params = {
+    command = "_typescript.organizeImports",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+  }
+  vim.lsp.buf.execute_command(params)
+end
+
 -- Setup custom LspAttach handlers for specific servers
--- This extends the base LspAttach autocmd from plugins.configs.lspconfig
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -124,14 +132,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     
     -- Handle ts_ls specific: organize imports keybinding
     if client.name == "ts_ls" then
-      local function organize_imports()
-        local params = {
-          command = "_typescript.organizeImports",
-          arguments = { vim.api.nvim_buf_get_name(0) },
-        }
-        vim.lsp.buf.execute_command(params)
-      end
-      
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>oi", "", {
         callback = organize_imports,
         noremap = true,
