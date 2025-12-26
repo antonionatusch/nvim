@@ -125,11 +125,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     local client = vim.lsp.get_client_by_id(args.data.client_id)
     local bufnr = args.buf
-    
+
     if not client then
       return
     end
-    
+
     -- Handle ts_ls specific: organize imports keybinding
     if client.name == "ts_ls" then
       vim.api.nvim_buf_set_keymap(bufnr, "n", "<Leader>oi", "", {
@@ -139,7 +139,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         desc = "Organize Imports (TypeScript)"
       })
     end
-    
+
     -- Handle clangd specific: disable signature help
     if client.name == "clangd" then
       client.server_capabilities.signatureHelpProvider = false
@@ -147,5 +147,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+vim.lsp.config["texlab"] = {
+  settings = {
+    texlab = {
+      build = {
+        executable = "latexmk",
+        args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+        onSave = false,
+      },
+      -- Formatting: texlab uses latexindent for this :contentReference[oaicite:2]{index=2}
+      latexFormatter = "latexindent",
+      latexindent = {
+        modifyLineBreaks = false,
+      },
+    },
+  },
+}
+
 -- Enable all custom LSP servers
-vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss" })
+vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab" })

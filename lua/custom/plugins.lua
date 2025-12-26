@@ -63,6 +63,7 @@ local plugins = {
         "codelldb",
         "dcm",
         "tailwindcss-language-server",
+        "texlab"
       },
       handlers = {
         ["angularls"] = function() end,
@@ -179,6 +180,28 @@ local plugins = {
         desc = "Convert JSON to TS Buffer",
       },
     },
+  },
+  {
+    "lervag/vimtex",
+    lazy = false, -- we don't want to lazy load VimTeX
+    init = function()
+      vim.g.vimtex_view_general_viewer = "okular"
+      vim.g.vimtex_view_general_options = '--unique file:@pdf#src:@line@tex'
+      vim.g.vimtex_compiler_method = "latexmk"
+      vim.g.vimtex_compiler_latexmk = {
+        out_dir = 'build'
+      }
+      vim.g.vimtex_formatting_enabled = 1
+    end
+  },
+  {
+    "iurimateus/luasnip-latex-snippets.nvim",
+    -- vimtex isn't required if using treesitter
+    requires = { "L3MON4D3/LuaSnip", "lervag/vimtex" },
+    config = function()
+      require 'luasnip-latex-snippets'.setup()
+      require("luasnip").config.setup { enable_autosnippets = true }
+    end,
   }
 }
 return plugins
