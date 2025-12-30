@@ -63,7 +63,8 @@ local plugins = {
         "codelldb",
         "dcm",
         "tailwindcss-language-server",
-        "texlab"
+        "texlab",
+        "tinymist"
       },
       handlers = {
         ["angularls"] = function() end,
@@ -201,6 +202,30 @@ local plugins = {
     config = function()
       require 'luasnip-latex-snippets'.setup()
       require("luasnip").config.setup { enable_autosnippets = true }
+    end,
+  },
+  {
+    "max397574/typst-tools.nvim",
+    ft = "typst",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp", -- Optional: if using nvim-cmp
+      "L3MON4D3/LuaSnip", -- Optional: if using LuaSnip
+    },
+    config = function()
+      require("typst-tools").setup({
+        -- Configuration options
+      })
+    end,
+  },
+  {
+    "chomosuke/typst-preview.nvim",
+    ft = "typst",
+    build = ":TypstPreviewUpdate", -- Command to download necessary binaries
+    config = function()
+      require("typst-preview").setup({
+        -- Configuration options (e.g., open_cmd)
+      })
     end,
   }
 }

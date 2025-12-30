@@ -164,5 +164,15 @@ vim.lsp.config["texlab"] = {
   },
 }
 
+vim.lsp.config["tinymist"] = {
+  cmd = { "tinymist" },
+  filetypes = { "typst" },
+  root_markers = { ".git/" },
+  capabilities = capabilities,
+  settings = {
+    formatterMode = "typstyle"
+  },
+}
+
 -- Enable all custom LSP servers
-vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab" })
+vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist" })
