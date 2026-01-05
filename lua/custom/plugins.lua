@@ -65,7 +65,8 @@ local plugins = {
         "tailwindcss-language-server",
         "texlab",
         "tinymist",
-        "pyright"
+        "pyright",
+        "black"
       },
       handlers = {
         ["angularls"] = function() end,
