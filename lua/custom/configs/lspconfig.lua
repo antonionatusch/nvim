@@ -26,6 +26,11 @@ vim.lsp.config["ts_ls"] = {
   root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 }
+vim.lsp.config["pyright"] = {
+  capabilities = capabilities,
+  root_markers = { ".git" },
+  filetypes = { "python" },
+}
 
 -- Define clangd config
 vim.lsp.config["clangd"] = {
@@ -175,4 +180,5 @@ vim.lsp.config["tinymist"] = {
 }
 
 -- Enable all custom LSP servers
-vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist" })
+vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
+  "pyright" })
