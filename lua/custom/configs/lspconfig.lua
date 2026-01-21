@@ -22,6 +22,7 @@ vim.lsp.config["angularls"] = {
 
 vim.lsp.config["intelephense"] = {
   -- Ensure you have 'intelephense' installed via npm: npm install -g intelephense
+  filetypes = { "html", "php" },
   settings = {
     intelephense = {
       -- Example: Add custom include paths for external libraries
@@ -79,6 +80,7 @@ vim.lsp.config["cssls"] = {
 -- Define html config
 vim.lsp.config["html"] = {
   capabilities = capabilities,
+  filetypes = { "html", "php" },
   settings = {
     html = {
       format = {
