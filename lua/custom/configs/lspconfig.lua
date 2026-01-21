@@ -20,6 +20,26 @@ vim.lsp.config["angularls"] = {
   filetypes = { "typescript", "html", "typescriptreact" },
 }
 
+vim.lsp.config["intelephense"] = {
+  -- Ensure you have 'intelephense' installed via npm: npm install -g intelephense
+  settings = {
+    intelephense = {
+      -- Example: Add custom include paths for external libraries
+      environment = {
+        includePaths = { "vendor/**" }
+      },
+      -- Disable formatting if using a different tool like Laravel Pint
+      format = {
+        enable = true
+      },
+      -- Telemetry is often disabled for privacy
+      telemetry = {
+        enabled = false
+      }
+    }
+  }
+}
+
 -- Define ts_ls config
 vim.lsp.config["ts_ls"] = {
   capabilities = capabilities,
@@ -181,4 +201,4 @@ vim.lsp.config["tinymist"] = {
 
 -- Enable all custom LSP servers
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
-  "pyright" })
+  "pyright", "intelephense" })

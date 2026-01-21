@@ -66,7 +66,8 @@ local plugins = {
         "texlab",
         "tinymist",
         "pyright",
-        "black"
+        "black",
+        "intelephense"
       },
       handlers = {
         ["angularls"] = function() end,
