@@ -266,3 +266,4 @@ end
 require("lazy").setup(default_plugins, config.lazy_nvim)
 require("luasnip").filetype_extend("typescript", { "angular" })
 require("luasnip").filetype_extend("html", { "angular" })
+require("luasnip").filetype_extend("php", { "html", "css" })
