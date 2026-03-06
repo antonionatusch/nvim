@@ -1,3 +1,33 @@
+local function img_clip_project_root()
+  local buffer_path = vim.api.nvim_buf_get_name(0)
+
+  if buffer_path == "" then
+    return vim.fn.getcwd()
+  end
+
+  local start_path = vim.fs.dirname(buffer_path)
+  local assets_dir = vim.fs.find("assets", {
+    path = start_path,
+    upward = true,
+    type = "directory",
+  })[1]
+
+  if assets_dir then
+    return vim.fs.dirname(assets_dir)
+  end
+
+  local root_marker = vim.fs.find({ "typst.toml", ".git", ".hg", ".svn" }, {
+    path = start_path,
+    upward = true,
+  })[1]
+
+  if root_marker then
+    return vim.fs.dirname(root_marker)
+  end
+
+  return vim.fn.getcwd()
+end
+
 local plugins = {
   {
     "rcarriga/nvim-dap-ui",
@@ -230,6 +260,23 @@ local plugins = {
         -- Configuration options (e.g., open_cmd)
       })
     end,
+  },
+  {
+    "HakonHarnes/img-clip.nvim",
+    event = "VeryLazy",
+    opts = {
+      filetypes = {
+        typst = {
+          dir_path = function()
+            return vim.fs.joinpath(img_clip_project_root(), "assets", "images")
+          end,
+        },
+      },
+    },
+    keys = {
+      -- suggested keymap
+      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
+    },
   }
 }
 return plugins
