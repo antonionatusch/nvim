@@ -277,6 +277,10 @@ local plugins = {
       -- suggested keymap
       { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
     },
+  },
+  {
+    "aklt/plantuml-syntax",
+    ft = "plantuml",
   }
 }
 return plugins

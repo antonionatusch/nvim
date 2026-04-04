@@ -201,6 +201,18 @@ vim.lsp.config["tinymist"] = {
   },
 }
 
+vim.lsp.config["plantuml_lsp"] = {
+  cmd = {
+    vim.fn.expand("~/go/bin/plantuml-lsp"),
+    "--exec-path=plantuml",
+    -- or use this instead of --exec-path if you want the jar:
+    -- "--jar-path=/path/to/plantuml.jar",
+  },
+  filetypes = { "plantuml" },
+  root_markers = { ".git" },
+  settings = {},
+}
+
 -- Enable all custom LSP servers
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
-  "pyright", "intelephense" })
+  "pyright", "intelephense", "plantuml_lsp" })
