@@ -6,7 +6,26 @@ vim.api.nvim_create_autocmd("BufWritePost", {
   callback = function(args)
     local file = vim.fn.fnamemodify(args.file, ":p")
     local dir = vim.fn.fnamemodify(file, ":h")
-    local outdir = dir:gsub("/puml$", "/svg")
+
+    local puml_root, relative_subdir
+
+    if dir:match("/puml$") then
+      puml_root = dir:gsub("/puml$", "")
+      relative_subdir = ""
+    else
+      puml_root = dir:match("^(.*)/puml/")
+      relative_subdir = dir:match("/puml/(.*)$")
+    end
+
+    if not puml_root then
+      vim.notify("PlantUML file is not inside a puml directory", vim.log.levels.WARN)
+      return
+    end
+
+    local outdir = puml_root .. "/svg"
+    if relative_subdir and relative_subdir ~= "" then
+      outdir = outdir .. "/" .. relative_subdir
+    end
 
     vim.fn.mkdir(outdir, "p")
 
@@ -16,10 +35,10 @@ vim.api.nvim_create_autocmd("BufWritePost", {
       vim.fn.shellescape(file)
     )
 
-    vim.fn.system(cmd)
+    local result = vim.fn.system(cmd)
 
     if vim.v.shell_error ~= 0 then
-      vim.notify(vim.fn.systemlist(cmd)[1] or "PlantUML export failed", vim.log.levels.ERROR)
+      vim.notify(result ~= "" and result or "PlantUML export failed", vim.log.levels.ERROR)
     end
   end,
 })
