@@ -1,0 +1,24 @@
+{
+  "Use Case Typst": {
+    "prefix": "ucase",
+    "body": [
+      "#let use-case-$1 = use-case(",
+      "    title: \"$2\",",
+      "    main-flow: [",
+      "      $3",
+      "    ],",
+      "    alt-flow: [",
+      "      $4",
+      "    ],",
+      "  )",
+      "",
+      "  #use-case-$1",
+      "",
+      "  #apa-figure(",
+      "    image(\"../../assets/uml/svg/usecases/use-case-$5.svg\"),",
+      "    caption: \"Diagrama del caso de uso: $2\",",
+      "  )$0"
+    ],
+    "description": "Snippet completo para Casos de Uso en Typst"
+  }
+}
