@@ -281,6 +281,9 @@ local plugins = {
   {
     "aklt/plantuml-syntax",
     ft = "plantuml",
+  },
+  {
+    "supabase-community/postgres-language-server",
   }
 }
 return plugins
