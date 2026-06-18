@@ -78,8 +78,12 @@ local plugins = {
   },
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
+    opts = function()
+      -- 1. Grab NvChad's baseline options (keeps the UI icons & settings)
+      local opts = require "plugins.configs.mason"
+
+      -- 2. Define your massive array of packages here
+      opts.ensure_installed = {
         "eslint-lsp",
         "js-debug-adapter",
         "prettier",
@@ -90,19 +94,17 @@ local plugins = {
         "codelldb",
         "css-lsp",
         "html-lsp",
-        "codelldb",
         "dcm",
         "tailwindcss-language-server",
         "texlab",
         "tinymist",
         "pyright",
         "black",
-        "intelephense"
-      },
-      handlers = {
-        ["angularls"] = function() end,
+        "intelephense",
+        "ltex-ls"
       }
-    }
+      return opts
+    end,
   },
   {
     "neovim/nvim-lspconfig",
@@ -158,7 +160,8 @@ local plugins = {
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    build = "cd app && yarn install",
+    -- 🟢 Esto ejecuta el script oficial de instalación sin depender de yarn o npm globales
+    build = "sh -c 'cd app && ./install.sh'",
     init = function()
       vim.g.mkdp_filetypes = { "markdown" }
     end,
