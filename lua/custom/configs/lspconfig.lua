@@ -215,11 +215,11 @@ vim.lsp.config["plantuml_lsp"] = {
 
 vim.lsp.config["ltex"] = {
   capabilities = capabilities,
-  filetypes = { "bibtex", "gitcommit", "markdown", "org", "tex", "typst" },
+  filetypes = { "bibtex", "gitcommit", "markdown", "org", "tex" },
   settings = {
     ltex = {
       language = "es", -- Forces LanguageTool to check grammar and accents in Spanish
-      enabled = { "bibtex", "gitcommit", "markdown", "org", "tex", "typst" },
+      enabled = { "bibtex", "gitcommit", "markdown", "org", "tex" },
       -- dictionary = {
       --   ["es"] = { "NvChad", "Typst" } -- Uncomment to whitelist custom words
       -- },
@@ -227,6 +227,14 @@ vim.lsp.config["ltex"] = {
   },
 }
 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "typst",
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "es"
+  end,
+})
+
 -- Enable all custom LSP servers
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
-  "pyright", "intelephense", "plantuml_lsp", "ltex" })
+  "pyright", "intelephense", "plantuml_lsp", "ltex", })
