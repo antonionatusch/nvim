@@ -101,7 +101,10 @@ local plugins = {
         "pyright",
         "black",
         "intelephense",
-        "ltex-ls"
+        "ltex-ls",
+        "docker-compose-language-service",
+        "docker-language-server",
+        "dockerfmt"
       }
       return opts
     end,

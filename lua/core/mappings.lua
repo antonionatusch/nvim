@@ -48,9 +48,35 @@ M.general = {
 
     ["<leader>fm"] = {
       function()
-        vim.lsp.buf.format { async = true }
+        local ft = vim.bo.filetype
+
+        local formatter_filetypes = {
+          ["yaml.docker-compose"] = true,
+          ["dockerfile"] = true,
+        }
+
+        if formatter_filetypes[ft] then
+          vim.cmd("FormatWrite")
+          return
+        end
+
+        local clients = vim.lsp.get_clients({ bufnr = 0 })
+        local has_lsp_formatter = false
+
+        for _, client in ipairs(clients) do
+          if client:supports_method("textDocument/formatting") then
+            has_lsp_formatter = true
+            break
+          end
+        end
+
+        if has_lsp_formatter then
+          vim.lsp.buf.format({ async = true })
+        else
+          vim.cmd("FormatWrite")
+        end
       end,
-      "LSP formatting",
+      "Format file",
     },
   },
 

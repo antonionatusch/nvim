@@ -12,6 +12,8 @@ local cmd = {
   global_path,
 }
 
+local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+
 -- Define angularls config
 vim.lsp.config["angularls"] = {
   cmd = cmd,
@@ -235,6 +237,34 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Enable all custom LSP servers
+vim.lsp.config["dockerls"] = {
+  cmd = { mason_bin .. "/docker-langserver", "--stdio" },
+  capabilities = capabilities,
+  root_markers = { "Dockerfile", ".git" },
+  filetypes = { "dockerfile" },
+  settings = {
+    docker = {
+      languageserver = {
+        formatter = {
+          ignoreMultilineInstructions = true,
+        },
+      },
+    },
+  },
+}
+
+vim.lsp.config["docker_compose_language_service"] = {
+  cmd = { mason_bin .. "/docker-compose-langserver", "--stdio" },
+  capabilities = capabilities,
+  root_markers = {
+    "docker-compose.yml",
+    "docker-compose.yaml",
+    "compose.yml",
+    "compose.yaml",
+    ".git",
+  },
+  filetypes = { "yaml.docker-compose" },
+}
+
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
-  "pyright", "intelephense", "plantuml_lsp", "ltex", })
+  "pyright", "intelephense", "plantuml_lsp", "ltex", "dockerls", "docker_compose_language_service" })
