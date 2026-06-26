@@ -168,11 +168,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
         desc = "Organize Imports (TypeScript)"
       })
     end
-
-    -- Handle clangd specific: disable signature help
-    if client.name == "clangd" then
-      client.server_capabilities.signatureHelpProvider = false
-    end
   end,
 })
 
