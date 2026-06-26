@@ -84,16 +84,35 @@ local default_plugins = {
 
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+    branch = "main",
     build = ":TSUpdate",
-    opts = function()
-      return require "plugins.configs.treesitter"
-    end,
-    config = function(_, opts)
+    lazy = false,
+    config = function()
       dofile(vim.g.base46_cache .. "syntax")
-      require("nvim-treesitter.configs").setup(opts)
+
+      local nts = require("nvim-treesitter")
+
+      nts.setup({
+        install_dir = vim.fn.stdpath("data") .. "/site",
+      })
+
+      nts.install({
+        "bash",
+        "c",
+        "cpp",
+        "css",
+        "html",
+        "javascript",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "python",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+      })
     end,
   },
 
