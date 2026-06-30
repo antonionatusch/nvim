@@ -1,12 +1,3 @@
-local options = {
-  ensure_installed = { "lua", "vim", "vimdoc", "typst" },
-
-  highlight = {
-    enable = true,
-    use_languagetree = true,
-  },
-
-  indent = { enable = true },
-}
+local options = {}
 
 return options

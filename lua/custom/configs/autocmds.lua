@@ -42,3 +42,15 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     end
   end,
 })
+
+
+-- Add this to your init.lua to auto-start native treesitter highlighting
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    -- Check if a parser exists for the current filetype before starting
+    local lang = vim.treesitter.language.get_lang(vim.bo.filetype) or vim.bo.filetype
+    if pcall(vim.treesitter.start) then
+      -- Successfully started native highlighting
+    end
+  end,
+})

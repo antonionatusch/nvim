@@ -88,33 +88,31 @@ local default_plugins = {
     build = ":TSUpdate",
     lazy = false,
     config = function()
-      dofile(vim.g.base46_cache .. "syntax")
+      -- Keep your base46 cache loading if you are using NvChad
+      if vim.g.base46_cache then
+        dofile(vim.g.base46_cache .. "syntax")
+      end
 
-      local nts = require("nvim-treesitter")
-
-      nts.setup({
+      -- 1. Initialize the rewritten plugin (Minimal setup)
+      require("nvim-treesitter").setup({
         install_dir = vim.fn.stdpath("data") .. "/site",
       })
 
-      nts.install({
-        "bash",
-        "c",
-        "cpp",
-        "css",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "tsx",
-        "typescript",
-        "vim",
-        "vimdoc",
+      -- 2. Explicitly install your preferred languages (ensure_installed is gone)
+      -- This runs asynchronously and won't block startup
+      require("nvim-treesitter").install({
+        "lua", "python", "javascript", "markdown", "vimdoc"
+      })
+
+      -- 3. Tell Neovim 0.12 to activate highlighting natively
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
       })
     end,
   },
+
 
   -- git stuff
   {
