@@ -35,7 +35,7 @@ local default_plugins = {
     opts = {
       filetypes = {
         "css", "scss", "html", "javascript", "typescript", "typescriptreact", "javascriptreact",
-        "lua", "dart", -- 🟢 agregá Dart como filetype soportado
+        "lua", "dart",
       },
       user_default_options = {
         tailwind = true, -- enable tailwindcss colors
@@ -88,9 +88,17 @@ local default_plugins = {
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      dofile(vim.g.base46_cache .. "treesitter")
+      local base46 = require "base46"
+
+      for _, group in ipairs { "syntax", "treesitter" } do
+        local highlights = base46.load_highlight(group)
+        for name, opts in pairs(highlights) do
+          vim.api.nvim_set_hl(0, name, opts)
+        end
+      end
+
       require("nvim-treesitter").setup()
-    end,
+    end
   },
 
 
