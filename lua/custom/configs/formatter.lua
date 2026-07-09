@@ -19,8 +19,8 @@ local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 local dockerfmt = function()
   return {
     exe = mason_bin .. "/dockerfmt",
-    args = { "-w", vim.api.nvim_buf_get_name(0) },
-    stdin = false,
+    args = {},
+    stdin = true,
   }
 end
 
