@@ -212,25 +212,15 @@ vim.lsp.config["plantuml_lsp"] = {
 
 vim.lsp.config["ltex"] = {
   capabilities = capabilities,
-  filetypes = { "bibtex", "gitcommit", "markdown", "org", "tex" },
+  filetypes = { "bibtex", "gitcommit", "markdown", "org" },
   settings = {
     ltex = {
-      language = "es", -- Forces LanguageTool to check grammar and accents in Spanish
-      enabled = { "bibtex", "gitcommit", "markdown", "org", "tex" },
-      -- dictionary = {
-      --   ["es"] = { "NvChad", "Typst" } -- Uncomment to whitelist custom words
-      -- },
+      language = "en",
+      enabled = { "bibtex", "gitcommit", "markdown", "org" },
     },
   },
 }
 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "typst",
-  callback = function()
-    vim.opt_local.spell = true
-    vim.opt_local.spelllang = "es"
-  end,
-})
 
 vim.lsp.config["dockerls"] = {
   cmd = { mason_bin .. "/docker-langserver", "--stdio" },
@@ -260,6 +250,22 @@ vim.lsp.config["docker_compose_language_service"] = {
   },
   filetypes = { "yaml.docker-compose" },
 }
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "typst",
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "es"
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "tex",
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = "en"
+  end,
+})
 
 vim.lsp.enable({ "angularls", "ts_ls", "clangd", "cssls", "html", "dartls", "tailwindcss", "texlab", "tinymist",
   "pyright", "intelephense", "plantuml_lsp", "ltex", "dockerls", "docker_compose_language_service" })
