@@ -341,16 +341,33 @@ local plugins = {
       })
     end,
   },
-  -- spring boot project generator
+  -- spring boot component generator (Controller, Service, Repository, etc.)
   {
-    "jkeresman01/spring-initializr.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
-    cmd = { "SpringInitializr", "SpringGenerateProject" },
-    keys = {
-      { "<leader>si", "<cmd>SpringInitializr<cr>", desc = "Spring Initializr (TUI)" },
-      { "<leader>sg", "<cmd>SpringGenerateProject<cr>", desc = "Generate Spring Project" },
-    },
-    opts = {},
+    "lazerfit/spring-gen.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    ft = "java",
+    config = function()
+      require("spring-gen").setup({
+        generator = {
+          author = "tusch",
+          use_lombok = true,
+        },
+        runner = {
+          terminal_height = 15,
+        },
+        notifications = {
+          enabled = true,
+          timeout = 3000,
+        },
+        initializer = {
+          java_versions = { "17", "21", "23" },
+          boot_versions = { "Latest", "3.5.0" },
+          default_name = "demo-app",
+          default_group = "com.example",
+          default_deps = "web,lombok",
+        },
+      })
+    end,
   },
 }
 return plugins
