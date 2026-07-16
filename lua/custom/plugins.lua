@@ -313,12 +313,32 @@ local plugins = {
     "supabase-community/postgres-language-server",
   },
   -- java
+  -- Override spring-boot.nvim to remove nvim-jdtls dependency (conflicts with nvim-java)
+  {
+    "JavaHello/spring-boot.nvim",
+    dependencies = {
+      "ibhagwan/fzf-lua",
+    },
+  },
   {
     "nvim-java/nvim-java",
     dependencies = { "neovim/nvim-lspconfig" },
+    lazy = false,
     config = function()
-      require("java").setup()
-      vim.lsp.enable("jdtls")
+      require("java").setup({
+        checks = { nvim_jdtls_conflict = false },
+      })
+      local jdtls_config = vim.lsp.config["jdtls"]
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = jdtls_config.filetypes,
+        callback = function(args)
+          if vim.bo[args.buf].buftype ~= "" then return end
+          local root = vim.fs.root(args.buf, jdtls_config.root_markers[1])
+            or vim.fs.root(args.buf, jdtls_config.root_markers[2])
+            or vim.fn.getcwd()
+          vim.lsp.start(vim.tbl_extend("force", jdtls_config, { root_dir = root }), { bufnr = args.buf })
+        end,
+      })
     end,
   },
   -- spring boot project generator
