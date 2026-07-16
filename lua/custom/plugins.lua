@@ -311,6 +311,26 @@ local plugins = {
   },
   {
     "supabase-community/postgres-language-server",
-  }
+  },
+  -- java
+  {
+    "nvim-java/nvim-java",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require("java").setup()
+      vim.lsp.enable("jdtls")
+    end,
+  },
+  -- spring boot project generator
+  {
+    "jkeresman01/spring-initializr.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
+    cmd = { "SpringInitializr", "SpringGenerateProject" },
+    keys = {
+      { "<leader>si", "<cmd>SpringInitializr<cr>", desc = "Spring Initializr (TUI)" },
+      { "<leader>sg", "<cmd>SpringGenerateProject<cr>", desc = "Generate Spring Project" },
+    },
+    opts = {},
+  },
 }
 return plugins
