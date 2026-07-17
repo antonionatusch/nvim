@@ -341,30 +341,7 @@ local plugins = {
       })
     end,
   },
-  {
-    "jkeresman01/spring-initializr.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    cmd = {
-      "SpringInitializr",
-      "SpringGenerateProject",
-      "SpringInitializrHealth",
-      "SpringInitializrConfig",
-      "SpringInitializrLog",
-    },
-    opts = {
-      config_format = "yaml",
-      use_nerd_fonts = true,
-      persist_state = false,
-    },
-    keys = {
-      { "<leader>si", "<cmd>SpringInitializr<cr>", desc = "Spring Initializr" },
-      { "<leader>sg", "<cmd>SpringGenerateProject<cr>", desc = "Generate Spring project" },
-    },
-  },
+
   {
     "KashifKhn/haft.nvim",
     dependencies = {
@@ -430,6 +407,33 @@ local plugins = {
         },
       },
     },
+    config = function(_, opts)
+      require("haft").setup(opts)
+      -- Patch broken init_tui: https://github.com/KashifKhn/haft.nvim/issues
+      local api = require("haft.api")
+      local notify = require("haft.ui.notify")
+      api.init_tui = function()
+        local terminal = require("haft.ui.terminal")
+        local config = require("haft.config")
+        local cfg = config.get()
+        terminal.open("haft_init", {
+          cmd = cfg.haft_path,
+          args = { "init" },
+          cwd = vim.fn.getcwd(),
+          title = "Haft Init",
+          float = {
+            width = 0.9,
+            height = 0.9,
+            border = "rounded",
+          },
+          on_exit = function(code)
+            if code == 0 then
+              notify.info("Project initialization completed!")
+            end
+          end,
+        })
+      end
+    end,
     keys = {
       { "<leader>hi", "<cmd>HaftInfo<cr>", desc = "Haft info" },
       { "<leader>hr", "<cmd>HaftRoutes<cr>", desc = "Haft routes" },
