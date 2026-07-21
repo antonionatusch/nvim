@@ -1,25 +1,12 @@
 local config = require("plugins.configs.lspconfig")
 local capabilities = config.capabilities
 
-local global_path = vim.fn.trim(vim.fn.system("npm root -g"))
-
-local cmd = {
-  "ngserver",
-  "--stdio",
-  "--tsProbeLocations",
-  global_path,
-  "--ngProbeLocations",
-  global_path,
-}
-
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 
 -- Define angularls config
 vim.lsp.config["angularls"] = {
-  cmd = cmd,
   capabilities = capabilities,
-  root_markers = { "angular.json", "nx.json" },
-  filetypes = { "typescript", "html", "typescriptreact" },
+  workspace_required = true,
 }
 
 vim.lsp.config["intelephense"] = {
