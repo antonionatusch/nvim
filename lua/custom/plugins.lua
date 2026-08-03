@@ -88,6 +88,7 @@ local plugins = {
         "js-debug-adapter",
         "prettier",
         "typescript-language-server",
+        "typescript",
         "rust-analyzer",
         "clangd",
         "lua-language-server",
