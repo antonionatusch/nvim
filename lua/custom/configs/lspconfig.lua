@@ -2,11 +2,28 @@ local config = require("plugins.configs.lspconfig")
 local capabilities = config.capabilities
 
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
+
+-- Resolve TypeScript SDK for ts_ls / angularls
+-- Prefer standalone `typescript` package if Mason installed it, otherwise use the
+-- bundled typescript inside `typescript-language-server` (always present)
+local tsdk = mason_packages .. "/typescript-language-server/node_modules/typescript/lib"
+if vim.fn.isdirectory(mason_packages .. "/typescript/lib") == 1 then
+  tsdk = mason_packages .. "/typescript/lib"
+elseif vim.fn.isdirectory(mason_packages .. "/typescript/node_modules/typescript/lib") == 1 then
+  tsdk = mason_packages .. "/typescript/node_modules/typescript/lib"
+end
 
 -- Define angularls config
+-- angularls needs a valid TypeScript installation as well; provide Mason's tsdk
 vim.lsp.config["angularls"] = {
   capabilities = capabilities,
   workspace_required = true,
+  init_options = {
+    typescript = {
+      tsdk = tsdk,
+    },
+  },
 }
 
 vim.lsp.config["intelephense"] = {
@@ -32,7 +49,18 @@ vim.lsp.config["intelephense"] = {
 
 -- Define ts_ls config
 vim.lsp.config["ts_ls"] = {
+  cmd = { mason_bin .. "/typescript-language-server", "--stdio" },
   capabilities = capabilities,
+  init_options = {
+    hostInfo = "neovim",
+    -- for typescript-language-server < v5 and v5+ compatibility
+    tsserver = {
+      path = tsdk,
+    },
+    typescript = {
+      tsdk = tsdk,
+    },
+  },
   root_markers = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
 }
