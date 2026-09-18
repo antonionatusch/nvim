@@ -227,11 +227,11 @@ vim.lsp.config["plantuml_lsp"] = {
 
 vim.lsp.config["ltex"] = {
   capabilities = capabilities,
-  filetypes = { "bibtex", "gitcommit", "markdown", "org" },
+  filetypes = { "bibtex", "gitcommit", "org" },
   settings = {
     ltex = {
       language = "en",
-      enabled = { "bibtex", "gitcommit", "markdown", "org" },
+      enabled = { "bibtex", "gitcommit", "org" },
     },
   },
 }
